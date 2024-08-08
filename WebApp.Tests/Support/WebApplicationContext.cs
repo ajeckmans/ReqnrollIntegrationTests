@@ -16,7 +16,6 @@ public class WebApplicationContext(WebApplicationFactory<Program> webApp)
         var responseMessage =  await Client.GetAsync(url);
 
         BodyOfLastResponse = await responseMessage.Content.ReadAsStringAsync();
-
     }
 
     public string? BodyOfLastResponse { get; private set; }

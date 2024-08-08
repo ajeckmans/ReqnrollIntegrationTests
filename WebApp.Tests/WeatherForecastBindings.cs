@@ -15,8 +15,11 @@ public class WeatherForecastBindings(WebApplicationContext webAppContext, Databa
     [Given(@"I have a weather forecast")]
     public void GivenIHaveAWeatherForecast(Table table)
     {
+        // Convert the table to a list of weather forecasts so we can insert them into the database
         var weatherForecasts = table.CreateSet<Models.WeatherForecast>().ToList();
         
+        
+        // Here we're going to insert the weather forecasts into the running test container database
         using var sqlConnection = new SqlConnection(databaseInformation.ConnectionString);
         sqlConnection.Open();
         
@@ -35,21 +38,20 @@ public class WeatherForecastBindings(WebApplicationContext webAppContext, Databa
     [When(@"I request the weather forecast")]
     public async Task WhenIRequestTheWeatherForecastFor()
     {
+        // we execute the request to the web app and the response is stored in the webAppContext itself
         await webAppContext.GetAsync("/weatherforecast");
     }
 
     [Then(@"I should receive a weather forecast")]
     public void ThenIShouldReceiveAWeatherForecast(Table table)
     {
+        // Convert the table to a list of weather forecasts so we can compare them to the response
         var expectedWeatherForecasts = table.CreateSet<Models.WeatherForecast>().ToList();
 
-        var deserializationOptions = new JsonSerializerOptions()
-        {
-            PropertyNameCaseInsensitive = true
-        };
-        
-        var response = JsonSerializer.Deserialize<Models.WeatherForecast[]>(webAppContext.BodyOfLastResponse!, deserializationOptions);
+        // Deserialize the response from the web app
+        var response = JsonSerializer.Deserialize<Models.WeatherForecast[]>(webAppContext.BodyOfLastResponse!, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
+        // Compare the response to the expected weather forecasts
         response.Should().BeEquivalentTo(expectedWeatherForecasts);
     }
 }

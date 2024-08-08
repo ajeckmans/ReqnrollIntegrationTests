@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Using Include="Reqnroll"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.7" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0"/>
+        <PackageReference Include="Reqnroll.XUnit" Version="2.0.3"/>
+        <PackageReference Include="FluentAssertions" Version="6.2.0"/>
+        <PackageReference Include="Testcontainers.MsSql" Version="3.9.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="*.feature" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\WebApp\WebApp.csproj" />
+    </ItemGroup>
+
+</Project>
